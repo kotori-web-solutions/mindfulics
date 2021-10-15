@@ -1,4 +1,4 @@
-function handleMessage(request, sender, sendResponse) {
+function handleMessage(request) {
  
 	// console.log(request.payload);
 	

@@ -33,8 +33,10 @@ browser.tabs.query({
 }).then(tabs => {
   let tabId = tabs[0].id;
   browser.messageDisplay.getDisplayedMessage(tabId).then((message) => {
+	  
+	if (!message) { document.body.textContent = "Nichts zum Parsen gefunden."; return true; };
 	let msgId = message.id;
-	var msgSender = message.author;
+	let msgSender = message.author;
 	if ((message.subject == "Anmeldebestätigung") && (message.author.includes("mensa.de"))) {
 	
 		browser.messages.getFull(msgId).then((msgFull) => {
@@ -65,7 +67,7 @@ browser.tabs.query({
 
 			// console.log(icsBody);
 
-			var backgroundMessage = browser.runtime.sendMessage({
+			let backgroundMessage = browser.runtime.sendMessage({
 				payload: icsBody
 			});
 			//backgroundMessage.then(handleResponse, handleError);
