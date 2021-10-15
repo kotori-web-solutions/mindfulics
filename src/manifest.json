@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "name": "MinDful ICS",
+    "description": "ICS-File-Generator für MinD-Termine",
+    "version": "1.0",
+    "author": "Maren Sophie Arnhold",
+    "applications": {
+        "gecko": {
+            "id": "mindfulics@kotori.de",
+            "strict_min_version": "78.0"
+        }
+    },
+   "permissions": [
+		"downloads",
+		"messagesRead"
+    ],
+	"background": {
+		"scripts": [
+			"js/background.js"
+		]
+	},	
+    "browser_action": {
+        "default_popup": "content/ics.html",
+        "default_title": "MinDful ICS",
+        "default_icon": "images/brain32.png"
+    },
+    "icons": {
+        "64": "images/brain.png",
+        "32": "images/brain32.png",
+        "16": "images/brain16.png"
+    }
+}
