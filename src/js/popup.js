@@ -30,7 +30,7 @@ async function getReminderTimeframeNumeric(){
 	
 	const reminderNumeric = await browser.storage.sync.get('numeric');
 	
-	return reminderNumeric;
+	return parseInt(reminderNumeric.numeric);
 	
 }
 
@@ -38,7 +38,7 @@ async function getReminderTimeframeCategorial(){
 	
 	const reminderCategorial = await browser.storage.sync.get('categorial');
 	
-	return reminderCategorial;
+	return reminderCategorial.categorial;
 	
 }
 
@@ -47,10 +47,10 @@ async function getReminderTimeframe(){
 	const reminderNumeric = await getReminderTimeframeNumeric();
 	const reminderCategorial = await getReminderTimeframeCategorial();	
 	
-		if (reminderNumeric.numeric > 0) {
+		if ((reminderNumeric > 0) && (reminderCategorial != "")) {
 		
-			var reminderProcessedString = reminderNumeric.numeric;	
-			switch (reminderCategorial.categorial){
+			var reminderProcessedString = reminderNumeric;	
+			switch (reminderCategorial){
 				
 				case "i": reminderProcessedString += "M"; break;
 				case "h": reminderProcessedString += "H"; break;

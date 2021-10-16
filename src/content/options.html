@@ -8,8 +8,7 @@
       <h2>Erinnerungszeitraum vor dem Termin</h2>
 	  <br />
       <input type="text" id="remindernumeric" style="width:100px;" value="30" />&nbsp;
-      <select id="remindercategorial"/>
-		  <option value="">---</option>
+      <select id="remindercategorial"/>		  
 		  <option value="i" selected>Minute/n</option>
 		  <option value="h">Stunde/n</option>
 		  <option value="d">Tag/e</option>
@@ -17,6 +16,8 @@
 	  <br /><br />
       <button type="submit">Speichern</button>
 	  <span id="remindersavedspan" style="display:none;color:#006600;font-weight:bold;">Erledigt.</span>
+	  <br /><br />
+	  Bei ungültigen Werten (Null, negativ, leer, alphanumerisch) für die freie Zahlenangabe wird beim Export ersatzweise ein Zeitraum von 30 Minuten angesetzt, bis die Eingabe korrigiert wurde.
     </form>
     <script src="../js/options.js"></script>
   </body>
