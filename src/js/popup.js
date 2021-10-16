@@ -26,6 +26,44 @@ function parseBody(msgBody){
 	
 }
 
+async function getReminderTimeframeNumeric(){
+	
+	const reminderNumeric = await browser.storage.sync.get('numeric');
+	
+	return reminderNumeric;
+	
+}
+
+async function getReminderTimeframeCategorial(){
+	
+	const reminderCategorial = await browser.storage.sync.get('categorial');
+	
+	return reminderCategorial;
+	
+}
+
+async function getReminderTimeframe(){
+		
+	const reminderNumeric = await getReminderTimeframeNumeric();
+	const reminderCategorial = await getReminderTimeframeCategorial();	
+	
+		if (reminderNumeric.numeric > 0) {
+		
+			var reminderProcessedString = reminderNumeric.numeric;	
+			switch (reminderCategorial.categorial){
+				
+				case "i": reminderProcessedString += "M"; break;
+				case "h": reminderProcessedString += "H"; break;
+				case "d": reminderProcessedString += "D"; break;
+				default: reminderProcessedString += "M"; break;
+				
+			}
+
+			return reminderProcessedString;
+			
+		} else { return "30M"; };
+		
+}
 
 browser.tabs.query({
   active: true,
@@ -39,12 +77,13 @@ browser.tabs.query({
 	let msgSender = message.author;
 	if ((message.subject == "Anmeldebestätigung") && (message.author.includes("mensa.de"))) {
 	
-		browser.messages.getFull(msgId).then((msgFull) => {
+		browser.messages.getFull(msgId).then(async (msgFull) => {
 			
 			let icsBody = "";
 			let msgBody = msgFull.parts[0].body;
 			let msgBodyParsed = new parseBody(msgBody);
-
+			let reminderTimeframe = await getReminderTimeframe();
+			
 			// console.log(msgBodyParsed);
 			
 			icsBody += "BEGIN:VCALENDAR\n";
@@ -62,7 +101,12 @@ browser.tabs.query({
 			icsBody += "DTSTART;TZID=Europe/Berlin:"+msgBodyParsed.propStartDate+"\n";
 			icsBody += "DTEND;TZID=Europe/Berlin:"+msgBodyParsed.propEndDate+"\n";
 			icsBody += "DTSTAMP:"+msgBodyParsed.propDateCreated+"0000\n";
-			icsBody += "END:VEVENT\n";
+			icsBody += "BEGIN:VALARM\n";
+			icsBody += "ACTION:DISPLAY\n";
+			icsBody += "DESCRIPTION:Erinnerung "+msgBodyParsed.propSummary+"\n";
+			icsBody += "TRIGGER:-PT"+reminderTimeframe+"\n";
+			icsBody += "END:VALARM\n";			
+			icsBody += "END:VEVENT\n";			
 			icsBody += "END:VCALENDAR";
 
 			// console.log(icsBody);
@@ -70,7 +114,8 @@ browser.tabs.query({
 			let backgroundMessage = browser.runtime.sendMessage({
 				payload: icsBody
 			});
-			//backgroundMessage.then(handleResponse, handleError);
+			
+			// backgroundMessage.then(handleResponse, handleError);
 			
 							
 			return true;

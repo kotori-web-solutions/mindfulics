@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "MinDful ICS",
     "description": "ICS-File-Generator für MinD-Termine",
-    "version": "1.0",
+    "version": "1.1",
     "author": "Maren Sophie Arnhold",
     "applications": {
         "gecko": {
@@ -12,7 +12,8 @@
     },
    "permissions": [
 		"downloads",
-		"messagesRead"
+		"messagesRead",
+		"storage"
     ],
 	"background": {
 		"scripts": [
@@ -28,5 +29,8 @@
         "64": "images/brain.png",
         "32": "images/brain32.png",
         "16": "images/brain16.png"
-    }
+    },
+	"options_ui": {
+		"page": "content/options.html"
+	}
 }
