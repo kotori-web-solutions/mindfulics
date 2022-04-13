@@ -14,13 +14,13 @@ function parseBody(msgBody){
 
 	let msgBodyArray = msgBody.split('\n');
 
-	this.propOrganizer = msgBodyArray[8].substring(30).replace("\r","").replace("\n","");	
-	this.propOrganizerMail = msgBodyArray[9].substring(30).replace("\r","").replace("\n","").replace("mailto:","");	
-	this.propLocation = msgBodyArray[10].substring(30).replace("\r","").replace("\n","") + ", " + msgBodyArray[11].substring(30).replace("\r","").replace("\n","");	
-	this.propSummary = msgBodyArray[5].substring(30).replace("\r","").replace("\n","");	
-	this.propStartDate = extractDate(msgBodyArray[6].substring(30).replace("\r","").replace("\n",""));	
-	this.propEndDate = extractDate(msgBodyArray[7].substring(30).replace("\r","").replace("\n",""));	
-	this.propDateCreated = extractDate(msgBodyArray[12].substring(30).replace("\r","").replace("\n",""));	
+	this.propOrganizer = msgBodyArray[6].substring(14).replace("\r","").replace("\n","");	
+	this.propOrganizerMail = msgBodyArray[7].substring(8).replace("\r","").replace("\n","").replace("mailto:","");	
+	this.propLocation = msgBodyArray[8].substring(7).replace("\r","").replace("\n","") + msgBodyArray[11].substring(30).replace("\r","").replace("\n","");	
+	this.propSummary = msgBodyArray[4].substring(7).replace("\r","").replace("\n","");		
+	this.propStartDate = extractDate(msgBodyArray[5].substring(8,24).replace("\r","").replace("\n",""));		
+	this.propEndDate = extractDate((msgBodyArray[5].substring(8,18) + msgBodyArray[5].substring(26)).replace("\r","").replace("\n",""));	
+	this.propDateCreated = extractDate(msgBodyArray[10].substring(15).replace("\r","").replace("\n",""));	
 	
 	return true;
 	
@@ -75,7 +75,7 @@ browser.tabs.query({
 	if (!message) { document.body.textContent = "Nichts zum Parsen gefunden."; return true; };
 	let msgId = message.id;
 	let msgSender = message.author;
-	if ((message.subject == "Anmeldebestätigung") && (message.author.includes("mensa.de"))) {
+	if (((message.subject == "Anmeldebestätigung") || (message.subject == "Buchungsbestätigung")) && (message.author.includes("mensa.de"))) {
 	
 		browser.messages.getFull(msgId).then(async (msgFull) => {
 			
